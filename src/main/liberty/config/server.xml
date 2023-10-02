@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="new server">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>microProfile-6.0</feature>
+        <feature>data-1.0</feature>
+        <feature>mpTelemetry-1.0</feature>
+        <feature>persistence-3.1</feature>
+    </featureManager>
+
+    <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+    <httpEndpoint id="defaultHttpEndpoint"
+                  httpPort="9080"
+                  httpsPort="9443"/>
+
+    <!-- Configures the application on a specified context root -->
+    <webApplication contextRoot="${app.context.root}" location="${project.name}.war" >
+        <!-- enable visibility to third party apis -->
+<!--        <classloader apiTypeVisibility="+third-party"/>-->
+    </webApplication>
+    <library id="PostgresLib">
+        <fileset dir="${server.config.dir}/lib/postgres" includes="*.jar"/>
+    </library>
+<!--    <library id="DerbyLib">-->
+<!--        <fileset dir="${server.config.dir}/lib/derby" includes="*.jar"/>-->
+<!--    </library>-->
+
+<!--    <dataSource id="DefaultDataSource" jndiName="jdbc/derby">-->
+<!--        <jdbcDriver libraryRef="DerbyLib"/>-->
+
+<!--        <properties.derby.embedded-->
+<!--                url="jdbc:otel:derby:memory:myDB"-->
+<!--                createDatabase="create"/>-->
+
+<!--        &lt;!&ndash;        <properties.postgresql&ndash;&gt;-->
+<!--        &lt;!&ndash;                databaseName="postgres"&ndash;&gt;-->
+<!--        &lt;!&ndash;                serverName="localhost"&ndash;&gt;-->
+<!--        &lt;!&ndash;                portNumber="5432"&ndash;&gt;-->
+<!--        &lt;!&ndash;                user="postgres"&ndash;&gt;-->
+<!--        &lt;!&ndash;                password="openliberty"/>&ndash;&gt;-->
+<!--    </dataSource>-->
+
+<!--    <dataSource id="DefaultDataSource" jndiName="jdbc/postgres">-->
+<!--        <jdbcDriver libraryRef="PostgresLib"/>-->
+<!--        <properties.postgresql-->
+<!--                databaseName="postgres"-->
+<!--                serverName="localhost"-->
+<!--                portNumber="5432"-->
+<!--                user="postgres"-->
+<!--                password="openliberty"/>-->
+<!--    </dataSource>-->
+
+    <dataSource id="DefaultDataSource"  type="javax.sql.DataSource" jndiName="jdbc/postgres">
+        <jdbcDriver libraryRef="PostgresLib"
+                    javax.sql.DataSource="org.apache.commons.dbcp2.BasicDataSource"/>
+        <properties
+                url="jdbc:otel:postgresql://localhost:5432/postgres"
+                username="postgres"
+                password="openliberty"/>
+    </dataSource>
+</server>
